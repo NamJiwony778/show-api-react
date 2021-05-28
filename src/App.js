@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Table from 'react-bootstrap/Table';
+import { Course } from './components/course/course.component';
+import './App.css'
+import { Header } from './components/header/header.component';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      courses: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://api.sampleapis.com/codingresources/codingResources')
+    .then(response => response.json())
+    .then(codingResources => this.setState({ courses: codingResources }))
+  }
+  
+  render() {
+    return (
+      <div className="App">
+         <Header/>
+          <Table hover responsive="sm">
+            <thead>
+              <tr>
+              <th>ID</th>
+              <th>Details</th>
+              <th>Description</th>
+              <th>URL</th>
+              <th>Types</th>
+              <th>Topics</th>
+              <th>Levels</th>
+              </tr>
+            </thead>
+            <tbody>
+              <Course courses={this.state.courses}/>
+            </tbody>
+          </Table>
+      </div>
+    );
+  }
 }
 
 export default App;
